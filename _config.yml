@@ -38,7 +38,7 @@ icon_filename: Arcana-icon.png
 
 
 # Build settings
-theme: jekyll-theme-yat
+# theme: jekyll-theme-yat
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
